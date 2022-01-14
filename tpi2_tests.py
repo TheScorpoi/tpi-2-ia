@@ -107,7 +107,7 @@ for user in users:
     print(user,":",z.source_confidence(user))
 
 print("..........................................................")
-
+"""
 query_cases = [ ('philosopher','likesphilosophy'),
                 ('man','likesphilosophy'),
                 ('socrates','likesphilosophy'),
@@ -205,6 +205,6 @@ bn.add('car_s',[('c_c',False),('s_t',False),('s_q',False),('f_s',False)],0.023)
 result = bn.individual_probabilities()
 print('Individual probabilities:',result)
 
-
+"""
 
 
