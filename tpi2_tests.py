@@ -2,6 +2,7 @@
 
 
 from tpi2 import *
+import time
 
 # ----------------------------------------------------------------------
 # Redes semânticas
@@ -102,7 +103,7 @@ z.insert('confidenceengineer',Member('opus','cartooncharacter'))
 
 
 
-"""
+
 users = [ 'simao', 'ursula', 'manuel', 'confidenceengineer', 'knowledgeengineer' ]
 
 for user in users:
@@ -122,7 +123,6 @@ for (entity,relname) in query_cases:
     print(entity,"/",relname,":",z.query_with_confidence(entity,relname))
 
 print("..........................................................")
-"""
 # ----------------------------------------------------------------------
 # Redes de Bayes
 # ----------------------------------------------------------------------
@@ -199,8 +199,6 @@ bn.add('car_s',[('c_c',False),('s_t',False),('s_q',True),('f_s',True )],0.045)
 bn.add('car_s',[('c_c',False),('s_t',False),('s_q',True),('f_s',False)],0.031)
 bn.add('car_s',[('c_c',False),('s_t',False),('s_q',False),('f_s',True )],0.034)
 bn.add('car_s',[('c_c',False),('s_t',False),('s_q',False),('f_s',False)],0.023)
-
-
 
 result = bn.individual_probabilities()
 print('Individual probabilities:',result)
