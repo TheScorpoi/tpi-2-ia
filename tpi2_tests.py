@@ -101,13 +101,13 @@ z.insert('confidenceengineer',Member('opus','cartooncharacter'))
 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
 
 
+
+"""
 users = [ 'simao', 'ursula', 'manuel', 'confidenceengineer', 'knowledgeengineer' ]
 
 for user in users:
     print(user,":",z.source_confidence(user))
-
 print("..........................................................")
-"""
 query_cases = [ ('philosopher','likesphilosophy'),
                 ('man','likesphilosophy'),
                 ('socrates','likesphilosophy'),
@@ -122,7 +122,7 @@ for (entity,relname) in query_cases:
     print(entity,"/",relname,":",z.query_with_confidence(entity,relname))
 
 print("..........................................................")
-
+"""
 # ----------------------------------------------------------------------
 # Redes de Bayes
 # ----------------------------------------------------------------------
@@ -204,7 +204,3 @@ bn.add('car_s',[('c_c',False),('s_t',False),('s_q',False),('f_s',False)],0.023)
 
 result = bn.individual_probabilities()
 print('Individual probabilities:',result)
-
-"""
-
-

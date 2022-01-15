@@ -9,45 +9,43 @@ from collections import Counter
 class MySemNet(SemanticNetwork):
     def __init__(self):
         SemanticNetwork.__init__(self)
-        # IMPLEMENT HERE (if needed)
-        pass
 
     def source_confidence(self,user):
-        assoc_one_list = []
+        assoc_one_user = []
+        all_assoc_one = []
+        list = []
+        most_common_list = []
         correct = 0
         wrong = 0
-        list = []
-        most_commom_one = None
         for d in self.declarations:
+            if isinstance(d.relation, AssocOne) and d.user == user: 
+                assoc_one_user.append(d) #fill list with all relation AssocOne that declaration user is equals to user
             if isinstance(d.relation, AssocOne):
-                assoc_one_list.append(d)
+                all_assoc_one.append(d) #fill list with all relation AssocOne
         
-        dict
-        
-        for d in assoc_one_list:
-                relation = d.relation
-                ent1 = d.relation.entity1
-                for decla in assoc_one_list:
-                    if decla.relation == relation and decla.relation.entity1 == ent1:
-                        list.append(decla)
-                    
-        assoc_values = [d.relation.entity2 for d in list]
-        for c, _ in Counter(assoc_values).most_common(1):
-            most_commom_one = c
-            #print(most_commom_one)
+        for d_user in assoc_one_user: #for each declaration of assoc_one_user
+            list.clear()
+            for d_all in all_assoc_one: #for each declaration os all_assoc_one
+                if d_all.relation.name == d_user.relation.name and d_all.relation.entity1 == d_user.relation.entity1:
+                    list.append(d_all.relation.entity2) #add to list the entity2, the declarations that have the same entity1 and relation name
             
-        for d in assoc_one_list:
-            if d.relation.entity2 == most_commom_one:
+            most_commons = Counter(list).most_common()
+            most_common = [declaration[0] for declaration in [d for d in most_commons if most_commons[0][1] == d[1]]]
+            most_common_list.append(most_common)
+
+        for i in range(len(assoc_one_user)): #for each declaration of assoc_one_user
+            if assoc_one_user[i].relation.entity2 in most_common_list[i]: #if the entity2 of declaration is in the most_common_list correct increment by 1
                 correct += 1
-            else:
+            else: #if the entity2 of declaration is not in the most_common_list wrong increment by 1
                 wrong += 1
-            
-        confidence = (1 - (0.75 ** correct)) * (0.75 ** wrong)
-        return confidence
+        return (1 - (0.75 ** correct)) * (0.75 ** wrong)
 
     def query_with_confidence(self,entity,assoc):
         # IMPLEMENT HERE
-        pass
+        T = 0 #relations total
+        n = 0 #number each one occour
+        # sum(n) = T
+        
 
 
 
@@ -55,9 +53,21 @@ class MyBN(BayesNet):
 
     def __init__(self):
         BayesNet.__init__(self)
-        # IMPLEMENT HERE (if needed)
-        pass
-
+        self.result = dict()
+        
     def individual_probabilities(self):
-        # IMPLEMENT HERE
-        pass
+        for v in self.dependencies.keys():
+            temp_vars = [k for k in self.dependencies.keys() if k != v]
+            self.result[v] = round(sum([ self.jointProb([(v, True)] + c) for c in self._generate_conj(temp_vars)]), 3)
+        return self.result
+
+    def _generate_conj(self, variaveis):
+        if len(variaveis) == 1:
+            return [[(variaveis[0], True)] , [(variaveis[0], False)]]
+        
+        conj_list = []
+        conj_remain = self._generate_conj(variaveis[1:])
+        for c in conj_remain:
+            conj_list.append([(variaveis[0], True)] + c)
+            conj_list.append([(variaveis[0], False)] + c)
+        return conj_list
